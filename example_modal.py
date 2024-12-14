@@ -1,28 +1,55 @@
 import discord
+from copy import deepcopy
 
 class MyModal(discord.ui.Modal):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self.add_item(discord.ui.InputText(label="Short Input"))
-        self.add_item(discord.ui.InputText(label="Long Input", style=discord.InputTextStyle.long))
+        self.add_item(discord.ui.InputText(
+            label="Target",
+            placeholder='Enter translation query/slang',
+            max_length=50,
+        ))
+        self.add_item(discord.ui.InputText(
+            label="Additional context",
+            placeholder="Enter surrounding text as context for higher translation accuracy",
+            style=discord.InputTextStyle.long,
+            max_length=500,
+            required=False
+        ))
 
     async def callback(self, interaction: discord.Interaction):
         # embed = discord.Embed(title="Modal Results")
         # embed.add_field(name="Short Input", value=self.children[0].value)
         # embed.add_field(name="Long Input", value=self.children[1].value)
-        view = MyView(short=self.children[0].value, long=self.children[1].value)
+        target = self.children[0].value
+        additional_context = self.children[1].value
+
+        translations = [
+            {
+                'target': target,
+                'additional_context': additional_context,
+                'translation': 'ni hao ma',
+                'explanation': 'Yada yada explanation exoplanation',
+            },
+            {
+                'target': target,
+                'additional_context': additional_context,
+                'translation': 'pien',
+                'explanation': 'a wejo iasjdfl kasdjflk j',
+            },
+        ]
+        view = MyView(translations)
         view.message = await interaction.response.send_message(embed=view.embed, view=view)
 
 class MyView(discord.ui.View):
-    def __init__(self, *, short: str, long: str):
+    def __init__(self, translations: dict[dict]):
         super().__init__()
 
-        self.short = short
-        self.long = long
+        self.translations = deepcopy(translations)
 
         self.i = 0
-        self.n = 5
+        self.n = len(self.translations)
 
         self.reset_embed()
         
@@ -35,9 +62,18 @@ class MyView(discord.ui.View):
         self.add_item(self.next_button)
     
     def reset_embed(self):
-        self.embed = discord.Embed(color=0xff9c2c)
-        self.embed.title = self.short+f' {self.i=}'
-        self.embed.description = self.long
+        self.embed = discord.Embed(color=0x403c44)
+        # embed.add_field(name="Short Input", value=self.children[0].value)
+        # embed.add_field(name="Long Input", value=self.children[1].value)
+        self.embed.title = f'Slangslation result #{self.i+1}/{self.n}'
+
+        tl = self.translations[self.i]
+        self.embed.add_field(name='Target', value=tl['target'], inline=False)
+        self.embed.add_field(name='Additional context', value=tl['additional_context'], inline=False)
+        self.embed.add_field(name='Slangslation', value=tl['translation'], inline=False)
+        self.embed.add_field(name='Explanation', value=tl['explanation'], inline=False)
+        self.embed.description = 'hello darkness my old friend'
+        self.embed.set_footer(text='Slangslation by Slangslator')
         # self.embed.set_image()
 
     async def change_index(self, interaction, i):
