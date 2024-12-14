@@ -23,8 +23,8 @@ async def modal(ctx):
     await ctx.send_modal(modal)
 
 @bot.command(description="Translate a message")
-@discord.option("messageId", type=discord.SlashCommandOptionType.string)
-async def translate(ctx, messageId: str):
-    await ctx.respond(f"messageId = {messageId}", True)
+@discord.option("message_id", type=discord.SlashCommandOptionType.string)
+async def translate(ctx, message_id: str):
+    await ctx.respond(f"messageId = {message_id}", True)
 
 bot.run(os.getenv('TOKEN'))
