@@ -12,3 +12,5 @@ class MyModal(discord.ui.Modal):
         embed.add_field(name="Short Input", value=self.children[0].value)
         embed.add_field(name="Long Input", value=self.children[1].value)
         await interaction.response.send_message(embeds=[embed])
+
+# class MyView(discord.ui.View):
