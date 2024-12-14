@@ -13,11 +13,11 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
 
-@bot.command()
+@bot.hybrid_command(name="hello", description="Say hello!")
 async def hello(ctx):
     await ctx.send(f'Hello, {ctx.author.mention}!')
 
-@bot.command()
+@bot.hybrid_command(name="add", description="add")
 async def add(ctx, num1: int, num2: int):
     await ctx.send(f'The sum is {num1 + num2}')
 

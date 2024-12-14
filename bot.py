@@ -14,11 +14,19 @@ class SlangslatorBot(commands.Bot):
         )
         self.synced = False
 
+    async def setup_hook(self):
+        self.add_command(self.hello)
+
     async def on_ready(self):
         if not self.synced:
             await self.tree.sync()
             self.synced = True
         print(f'[Slangslator] :: Logged in as {self.user}')
+    
+    # What decorate do I add here to use a command?
+    @commands.command(name='hello')
+    async def hello(self, ctx):
+        await ctx.send(f'Hello, {ctx.author.mention}!')
 
 TOKEN = os.getenv('TOKEN')
 bot = SlangslatorBot()
