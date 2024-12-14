@@ -11,5 +11,9 @@ bot = discord.Bot()
 @bot.command(description="Sends the bot's latency.") # this decorator makes a slash command
 async def ping(ctx): # a slash command will be created with the name "ping"
     await ctx.respond(f"Pong! Latency is {bot.latency}")
+    
+@bot.command(description="Hello worold") # this decorator makes a slash command
+async def hello(ctx): # a slash command will be created with the name "ping"
+    await ctx.respond(f"Hello {ctx.author.mention}")
 
 bot.run(os.getenv('TOKEN'))
