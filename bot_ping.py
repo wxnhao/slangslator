@@ -13,13 +13,18 @@ bot = discord.Bot()
 async def ping(ctx): # a slash command will be created with the name "ping"
     await ctx.respond(f"Pong! Latency is {bot.latency}")
     
-@bot.command(description="Hello worold") # this decorator makes a slash command
-async def hello(ctx): # a slash command will be created with the name "ping"
-    await ctx.respond(f"Hello {ctx.author.mention}")
+# @bot.command(description="Hello worold") # this decorator makes a slash command
+# async def hello(ctx): # a slash command will be created with the name "ping"
+#     await ctx.respond(f"Hello {ctx.author.mention}")
 
-@bot.command(description="Send a modal to the user")
-async def modal(ctx):
-    modal = MyModal(title="Modal via Slash Command")
+# @bot.command(description="Send a modal to the user")
+# async def modal(ctx):
+#     modal = MyModal(title="Modal via Slash Command")
+#     await ctx.send_modal(modal)
+
+@bot.command(description="Slangslate a piece of text")
+async def translate(ctx):
+    modal = MyModal(title="Slangslate")
     await ctx.send_modal(modal)
 
 bot.run(os.getenv('TOKEN'))
